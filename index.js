@@ -62,6 +62,14 @@ async function run() {
       const result = await tutorial.find(quary).toArray();
       res.send(result);
     });
+    app.delete("/delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const quary = {
+        _id: new ObjectId(id),
+      };
+      const result = await tutorial.deleteOne(quary);
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(

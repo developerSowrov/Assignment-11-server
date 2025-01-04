@@ -76,6 +76,28 @@ async function run() {
       const result = await tutorial.findOne(find);
       res.send(result);
     });
+    app.patch("/updated/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = {
+        _id: new ObjectId(id),
+      };
+
+      const options = { upsert: true };
+      const updateData = req.body;
+      const updateDoc = {
+        $set: {
+          name: updateData.name,
+          email: updateData.email,
+          image: updateData.image,
+          language: updateData.language,
+          price: updateData.price,
+          description: updateData.description,
+          review: updateData.review,
+        },
+      };
+      const result = await tutorial.updateOne(filter, updateDoc, options);
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(

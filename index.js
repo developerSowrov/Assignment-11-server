@@ -70,6 +70,12 @@ async function run() {
       const result = await tutorial.deleteOne(quary);
       res.send(result);
     });
+    app.get("/update/:id", async (req, res) => {
+      const id = req.params.id;
+      const find = { _id: new ObjectId(id) };
+      const result = await tutorial.findOne(find);
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(

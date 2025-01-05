@@ -26,6 +26,7 @@ async function run() {
 
     const languageDB = client.db("languageDB");
     const tutorial = languageDB.collection("tutorial");
+    const tutorialBooked = languageDB.collection("tutorialBooked");
     app.post("/add", async (req, res) => {
       const data = req.body;
       const result = await tutorial.insertOne(data);
@@ -96,6 +97,12 @@ async function run() {
         },
       };
       const result = await tutorial.updateOne(filter, updateDoc, options);
+      res.send(result);
+    });
+    // tutorial book
+    app.post("/booked", async (req, res) => {
+      const data = req.body;
+      const result = await tutorialBooked.insertOne(data);
       res.send(result);
     });
     // Send a ping to confirm a successful connection

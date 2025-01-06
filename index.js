@@ -1,6 +1,6 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
 const app = express();
 const port = 5000;
 
@@ -22,7 +22,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const languageDB = client.db("languageDB");
     const tutorial = languageDB.collection("tutorial");
@@ -109,8 +109,23 @@ async function run() {
       const result = await tutorialBooked.find().toArray();
       res.send(result);
     });
+    app.patch("/reviewUpdate/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = {
+        _id: new ObjectId(id),
+      };
+      const updateDoc = {
+        $inc: {
+          review: 1,
+        },
+      };
+
+      const result = await tutorial.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
